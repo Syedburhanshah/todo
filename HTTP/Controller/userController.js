@@ -1,5 +1,6 @@
 const uuid = require("uuid");
 const User = require("../../App/Database/Model/userModel");
+const bcrypt=require("bcrypt")
 
 
 
@@ -23,7 +24,9 @@ class UserController {
       if(!user){
          res.status(404).send({message : 'Email not exist'})
       }
-      if (user && user.password === req.body.password) {
+      const comparePassword = await bcrypt.compare(req.body.password,user.password)
+      if (user && comparePassword) {
+        console.log("compared passs", comparePassword);
         req.session.userId = user.id;
         //console.log(user);
     
@@ -39,21 +42,23 @@ class UserController {
 
    signUpUser = async (req, res) => {
     try {
-     
+     console.log("Hi'''''''''''''",req.body);
         const oneUser = await User.findOne({
           where: {
             email: req.body.email,
           },
         });
-        console.log(oneUser);
+        console.log("oneUser",oneUser);
         if (oneUser) {
           res.send({ message: "Email already taken" });
         } else {
+          const hasedPassword = await bcrypt.hash(req.body.password,11)
+          console.log("hashed pass",hasedPassword);
           await User.create({
             id: uuid.v4(),
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
+            password:hasedPassword,
           });
         
           res.status(200).send({ message: "Added Successfully" });
