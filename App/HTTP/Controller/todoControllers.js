@@ -1,7 +1,6 @@
-const { where } = require("sequelize");
 const uuid = require("uuid");
-const Todo = require("../../App/Database/Model/todoModel")
-const auth = require("../middleware/auth")
+const Todo = require("../..npm start/Database/Model/todoModel")
+ require("../middleware/auth")
 
 
 class TodoController {
@@ -18,7 +17,6 @@ class TodoController {
  
     getTodoById = async (req, res) => {
      try {
-      console.log(req.session.userId,req.params.id,"MMMMMMMMMMMMMMMMMM")
        const todo = await Todo.findOne({
          where: {
            todoId : req.params.id,
@@ -43,7 +41,6 @@ class TodoController {
      try {
        const todo = await Todo.create({
         todoId : uuid.v4(),
-        userId : req.session.userId,
          name : req.body.name,
          description : req.body.description,
          userId :req.session.userId

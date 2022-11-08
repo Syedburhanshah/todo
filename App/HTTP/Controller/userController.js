@@ -1,10 +1,6 @@
 const uuid = require("uuid");
-const User = require("../../App/Database/Model/userModel");
+const User = require("../../Database/Model/userModel");
 const bcrypt=require("bcrypt")
-
-
-
-
 
 class UserController {
    getUsers = async (req, res) => {
@@ -42,7 +38,6 @@ class UserController {
 
    signUpUser = async (req, res) => {
     try {
-     console.log("Hi'''''''''''''",req.body);
         const oneUser = await User.findOne({
           where: {
             email: req.body.email,

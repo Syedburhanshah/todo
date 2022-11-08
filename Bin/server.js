@@ -1,4 +1,4 @@
-const app = require("../HTTP/expressApp/express")
+const app = require("../App/HTTP/expressApp/express")
 require('../App/Database/Connection/DatabaseConnection')
 const port = 5000;
 app.get('/', (req, res) => {
