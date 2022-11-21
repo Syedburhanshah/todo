@@ -1,5 +1,6 @@
 const express = require('express')
 const app =express();
+require('dotenv').config()
 const todoRoutes = require("../Router/todoRouter")
 const userRoutes = require("../Router/userRouter")
 const session = require('express-session')

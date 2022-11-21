@@ -1,5 +1,5 @@
 const uuid = require("uuid");
-const Todo = require("../..npm start/Database/Model/todoModel")
+const Todo = require("../../Database/Model/todoModel")
  require("../middleware/auth")
 
 

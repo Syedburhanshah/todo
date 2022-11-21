@@ -1,6 +1,6 @@
 const app = require("../App/HTTP/expressApp/express")
 require('../App/Database/Connection/DatabaseConnection')
-const port = 5000;
+const port = process.env.PORT;
 app.get('/', (req, res) => {
   res.send('Hello World!')
 }),
