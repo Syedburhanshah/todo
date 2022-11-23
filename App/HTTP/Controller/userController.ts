@@ -1,20 +1,23 @@
-const uuid = require("uuid");
-const User = require("../../Database/Model/userModel");
-const bcrypt=require("bcrypt")
+import { v4 as uuidv4 } from "uuid";
+import  User from "../../Database/Model/userModel";
+import bcrypt from "bcrypt";
+
 
 class UserController {
-   getUsers = async (req, res) => {
+   getUsers = async (req:any, res:any) => {
+    console.log("type of get user is..............",typeof this.getUsers)
     const users = await User.findAll();
     res.status(200).send(users);
   };
 
-   logInUser = async (req, res) => {
+   logInUser = async (req:any, res:any) => {
     try {
-      const user = await User.findOne({
+      const user:any = await User.findOne({
         where: {
           email: req.body.email,
           
         },
+        
       });
 
       if(!user){
@@ -27,6 +30,8 @@ class UserController {
         //console.log(user);
     
         res.status(200).send({ message: "log in successfully" });
+        console.log("type of login is ..............",typeof req, typeof res);
+        
       } else {
         res.status(404).send({ message: "Invalid email or password" });
       }
@@ -36,7 +41,7 @@ class UserController {
     }
   };
 
-   signUpUser = async (req, res) => {
+   signUpUser = async (req:any, res:any) => {
     try {
         const oneUser = await User.findOne({
           where: {
@@ -50,7 +55,7 @@ class UserController {
           const hasedPassword = await bcrypt.hash(req.body.password,11)
           console.log("hashed pass",hasedPassword);
           await User.create({
-            id: uuid.v4(),
+            id: uuidv4(),
             name: req.body.name,
             email: req.body.email,
             password:hasedPassword,
@@ -66,4 +71,4 @@ class UserController {
   };
 }
 
-module.exports = new UserController;
+export default new UserController;

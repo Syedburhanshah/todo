@@ -1,11 +1,11 @@
-const uuid = require("uuid");
-const Todo = require("../../Database/Model/todoModel")
- require("../middleware/auth")
+import { v4 as uuidv4 } from "uuid";
+import  Todo from "../../Database/Model/todoModel"
+import auth from "../middleware/auth"
 
 
 class TodoController {
 
-  getTodos = async (req, res) => {
+  getTodos = async (req:any, res:any) => {
     console.log(req.session)
     const todos = await Todo.findAll({
       where: {
@@ -15,7 +15,7 @@ class TodoController {
     res.status(200).send(todos);
   };
  
-    getTodoById = async (req, res) => {
+    getTodoById = async (req:any, res:any) => {
      try {
        const todo = await Todo.findOne({
          where: {
@@ -36,11 +36,11 @@ class TodoController {
    };
   
  
-    addTodo = async (req, res) => {
+    addTodo = async (req:any, res:any) => {
 
      try {
        const todo = await Todo.create({
-        todoId : uuid.v4(),
+        todoId :  uuidv4(),
          name : req.body.name,
          description : req.body.description,
          userId :req.session.userId
@@ -54,7 +54,7 @@ class TodoController {
      }
    };
  
-    updateTodo = async (req, res) => {
+    updateTodo = async (req:any, res:any) => {
      try {
        console.log(req.params.id)
        const todo = await Todo.update(
@@ -79,7 +79,7 @@ class TodoController {
      }
    };
  
-    deleteTodo = async (req, res) => {
+    deleteTodo = async (req:any, res:any) => {
      try {
        const todo = await Todo.destroy({
         
@@ -102,4 +102,4 @@ class TodoController {
    };
   
  }
- module.exports = new TodoController;
+ export default  new TodoController;

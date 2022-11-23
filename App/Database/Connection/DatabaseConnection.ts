@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-const db =require( './config');
+import {Sequelize} from 'sequelize';
+import db from  './config';
 
 const sequelize = new Sequelize(db.DB, db.USER, db.PASSWORD, {
   dialect: db.DIALECT,
@@ -14,7 +14,7 @@ try {
  console.error('Unable to connect to the database:', error);
 }
     
-  module.exports = sequelize
+  export default sequelize
 
 
   

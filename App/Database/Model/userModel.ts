@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-const sequelize = require('../Connection/DatabaseConnection')
+import Sequelize from 'sequelize';
+import sequelize from'../Connection/DatabaseConnection' 
 
 const user = sequelize.define('User',{
     id : {
@@ -24,4 +24,4 @@ const user = sequelize.define('User',{
 
 
 
-module.exports = user;
+export default user;
