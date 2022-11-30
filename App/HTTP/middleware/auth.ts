@@ -1,4 +1,4 @@
-const authentication = (req, res, next) => {
+const authentication = (req:any, res:any, next:any) => {
     if (req.session.userId) {
       next();
     } else {
@@ -6,4 +6,4 @@ const authentication = (req, res, next) => {
     }
   };
   
-  module.exports = authentication;
+ export default  authentication;

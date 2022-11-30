@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-const sequelize = require("../Connection/DatabaseConnection")
+import Sequelize from 'sequelize'
+import sequelize from "../Connection/DatabaseConnection"
 
 const todo = sequelize.define('Todo',{
     todoId : {
@@ -23,4 +23,4 @@ const todo = sequelize.define('Todo',{
 })
 
 
-module.exports = todo;
+export default todo;
