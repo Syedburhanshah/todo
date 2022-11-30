@@ -1,21 +1,29 @@
 import { v4 as uuidv4 } from "uuid";
 import  Todo from "../../Database/Model/todoModel"
 import auth from "../middleware/auth"
+import todoEntity from "../../domain/entities /todoEntity"
 
 
 class TodoController {
 
-  getTodos = async (req:any, res:any) => {
+ static getTodos = async (req:any, res:any) => {
     console.log(req.session)
     const todos = await Todo.findAll({
       where: {
         userId : req.session.userId,
       },
+
     });
-    res.status(200).send(todos);
+    const daotodo = await todos.map((value: any) => {
+      return todoEntity.createDao(value);
+      
+    });
+
+    
+    res.status(200).send(daotodo);
   };
  
-    getTodoById = async (req:any, res:any) => {
+   static getTodoById = async (req:any, res:any) => {
      try {
        const todo = await Todo.findOne({
          where: {
@@ -27,7 +35,10 @@ class TodoController {
        if (!todo) {
          res.status(404).send({ message: "ID not exist" });
        } else {
-         res.status(200).send(todo);
+        const daoTodo = await todoEntity.createDao(todo)
+     
+          res.status(200).send(daoTodo);
+
        }
      } catch (err) {
        console.log(err);
@@ -36,42 +47,59 @@ class TodoController {
    };
   
  
-    addTodo = async (req:any, res:any) => {
+   static addTodo = async (req:any, res:any) => {
 
      try {
-       const todo = await Todo.create({
-        todoId :  uuidv4(),
-         name : req.body.name,
-         description : req.body.description,
-         userId :req.session.userId
+      const dtoTodo=  todoEntity.createDto(uuidv4(), req.session.userId,req.body)
+
+      const todo = await Todo.create({
+        todoId : dtoTodo.todoId,
+         name : dtoTodo.name,             
+        description : dtoTodo.description,
+        userId :dtoTodo.userId
        });
+    
+   // const todo = await Todo.create(dtoTodo)
+    console.log(todo);
+    
+       const daoTodo =  todoEntity.createDao(todo)
       
  
-       res.status(200).send(todo);
+       res.status(200).send(daoTodo);
      } catch (err) {
        console.log(err);
        res.status(500).send({ message: "Internal Server Error" });
      }
    };
  
-    updateTodo = async (req:any, res:any) => {
+   static updateTodo = async (req:any, res:any) => {
      try {
-       console.log(req.params.id)
+      const dtoTodo=  todoEntity.createDto(req.params.id, req.session.userId,req.body)
+     //  console.log(req.params.id)
        const todo = await Todo.update(
          {
-           name: req.body.name,
-           description: req.body.description,
+           name: dtoTodo.name,
+           description: dtoTodo.description,
          },{
            where: {
-             todoId: req.params.id,
-             userId : req.session.userId,
+             todoId: dtoTodo.todoId,
+             userId : dtoTodo.userId,
            },
          });
        console.log(todo)
-       if (!todo) {
+       const daoTodo =  todoEntity.createDao(todo)
+      
+
+ 
+       //console.log("...................................................................",daoTodo)
+  
+       if (todo[0]===0) {
+        
+         
          res.status(404).send({ message: "ID not exist" });
        } else {
-         res.status(200).send({message : 'Updated Successfully'});
+        res.status(200).send({message:"update sucessfully"});
+      
        }
      } catch (err) {
        console.log(err);
@@ -79,7 +107,7 @@ class TodoController {
      }
    };
  
-    deleteTodo = async (req:any, res:any) => {
+   static deleteTodo = async (req:any, res:any) => {
      try {
        const todo = await Todo.destroy({
         
@@ -102,4 +130,4 @@ class TodoController {
    };
   
  }
- export default  new TodoController;
+ export default  TodoController;

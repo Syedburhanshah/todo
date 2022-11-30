@@ -1,16 +1,24 @@
 import { v4 as uuidv4 } from "uuid";
 import  User from "../../Database/Model/userModel";
 import bcrypt from "bcrypt";
+import UserEntity from "../../domain/entities /userEntity";
 
 
 class UserController {
-   getUsers = async (req:any, res:any) => {
-    console.log("type of get user is..............",typeof this.getUsers)
-    const users = await User.findAll();
-    res.status(200).send(users);
-  };
+  static getUsers = async (req:any, res:any) => {
 
-   logInUser = async (req:any, res:any) => {
+    const users = await User.findAll();
+    const user = users.map((value: any) => {
+      return UserEntity.createFromObject(value);
+    });
+
+    res.status(200).send(user);
+    console.log("...............................................",user)
+  };
+  
+ 
+  
+  static logInUser = async (req:any, res:any) => {
     try {
       const user:any = await User.findOne({
         where: {
@@ -30,7 +38,7 @@ class UserController {
         //console.log(user);
     
         res.status(200).send({ message: "log in successfully" });
-        console.log("type of login is ..............",typeof req, typeof res);
+       
         
       } else {
         res.status(404).send({ message: "Invalid email or password" });
@@ -41,34 +49,37 @@ class UserController {
     }
   };
 
-   signUpUser = async (req:any, res:any) => {
+ static  signUpUser = async (req:any, res:any) => {
     try {
         const oneUser = await User.findOne({
           where: {
             email: req.body.email,
           },
         });
-        console.log("oneUser",oneUser);
+        console.log("oneUser...................................",oneUser);
         if (oneUser) {
           res.send({ message: "Email already taken" });
         } else {
           const hasedPassword = await bcrypt.hash(req.body.password,11)
           console.log("hashed pass",hasedPassword);
-          await User.create({
-            id: uuidv4(),
-            name: req.body.name,
-            email: req.body.email,
+          const dtoUser = UserEntity.createFromInput(uuidv4(), req.body);
+        const signupUser = await User.create({
+            id: dtoUser.id,
+            name: dtoUser.name,
+            email: dtoUser.email,
             password:hasedPassword,
           });
-        
-          res.status(200).send({ message: "Added Successfully" });
+          
+          const daoUser = UserEntity.createFromObject(signupUser)
+          res.status(200).send(daoUser);
+          console.log("...................................................",daoUser)
         }
-      
-    } catch (err) {
+        
+      } catch (err) {
       console.log(err);
       res.status(500).send({ message: "Internal Server Error" });
     }
   };
 }
 
-export default new UserController;
+export default  UserController;
