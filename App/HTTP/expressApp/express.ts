@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from'dotenv';
 import todoRoutes from "../Router/todoRouter";
 import userRoutes from "../Router/userRouter";
+import authRoutes from "../Router/authRouter"
 import session from 'express-session';
 
 const app: any = express();
@@ -13,7 +14,8 @@ app.use(session({
     resave: false 
   }));
 app.use(express.json())
-app.use('/',todoRoutes)
-app.use('/',userRoutes)
+app.use('/todo',todoRoutes)
+app.use('/user',userRoutes)
+app.use("/auth", authRoutes)
 
 export default app;
