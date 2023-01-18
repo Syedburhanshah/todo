@@ -11,7 +11,7 @@ class UserServices implements UserInterface {
   async getUsers(): Promise<any> {
     const users = await prisma.users.findMany();
     const user = users.map((value: any) => {
-      return UserEntity.createDao(value);
+      return UserEntity.createFromObject(value);
     });
 
     return { statusCode: statusCode.SUCCESS, message: user };
@@ -69,7 +69,7 @@ class UserServices implements UserInterface {
       } else {
         const hasedPassword = await bcrypt.hash(req.body.password, 11);
         console.log("hashed pass", hasedPassword);
-        const dtoUser = UserEntity.createDto(uuidv4(), req.body);
+        const dtoUser = UserEntity.createFromInput(uuidv4(), req.body);
         await prisma.users.create({
           data: dtoUser,
         });
