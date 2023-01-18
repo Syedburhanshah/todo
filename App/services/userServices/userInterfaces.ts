@@ -1,4 +1,4 @@
-import UserEntity from "../../domain/entities /userEntity";
+import UserEntity from "../../domain/entities/userEntity";
 
 interface UserInterface {
   getUsers(): Promise<any>;

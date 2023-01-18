@@ -2,7 +2,7 @@ import TodoInterface from "./todoInterfaces";
 import { statusCode, message } from "../errorHandling/errorMessage";
 import { v4 as uuidv4 } from "uuid";
 import auth from "../../HTTP/middleware/auth";
-import todoEntity from "../../domain/entities /todoEntity";
+import todoEntity from "../../domain/entities/todoEntity";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

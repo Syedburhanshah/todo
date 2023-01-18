@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import UserEntity from "../../domain/entities /userEntity";
+import UserEntity from "../../domain/entities/userEntity";
 import { PrismaClient } from "@prisma/client";
 import UserInterface from "./userInterfaces";
 import { statusCode, message } from "../errorHandling/errorMessage";

@@ -1,4 +1,4 @@
-import TodoEntity from "../../domain/entities /todoEntity";
+import TodoEntity from "../../domain/entities/todoEntity";
 
 interface TodoInterface {
   getTodos(todo: any): Promise<any>;
