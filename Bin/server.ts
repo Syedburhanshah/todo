@@ -1,3 +1,4 @@
+import logger from "../App/services/loggers"
 import app from "../App/HTTP/expressApp/express"
 const port = process.env.PORT;
 
@@ -8,5 +9,8 @@ app.get('/', (req:any, res:any) => {
 }),
 
 app.listen(port,() => {
-    console.log(`Running on port ${port}`)
+    logger.info(`Running on port ${port}`)
+    
+    
+
 })

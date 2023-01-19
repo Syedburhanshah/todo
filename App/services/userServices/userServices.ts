@@ -1,9 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
+import loggers from "winston";
+
 import bcrypt from "bcrypt";
 import UserEntity from "../../domain/entities/userEntity";
 import { PrismaClient } from "@prisma/client";
 import UserInterface from "./userInterfaces";
 import { statusCode, message } from "../errorHandling/errorMessage";
+import { Logger } from "winston";
 
 const prisma = new PrismaClient();
 
@@ -68,7 +71,7 @@ class UserServices implements UserInterface {
         };
       } else {
         const hasedPassword = await bcrypt.hash(req.body.password, 11);
-        console.log("hashed pass", hasedPassword);
+        loggers.info("hashed pass", hasedPassword);
         const dtoUser = UserEntity.createFromInput(uuidv4(), req.body);
         await prisma.users.create({
           data: dtoUser,
